@@ -1,0 +1,64 @@
+const smooth = 60;
+const limit = 10;
+let searchString ='ihone 1 po mx';
+const items = [
+    {
+      name: 'iPhone 12 pro max'
+    },
+    {
+      name: 'iPhone 13 pro max'
+    },
+    {
+      name: 'Газовая плита'
+    },
+    {
+      name: 'samsung galaxy s21'
+    },
+    {
+      name: 'samsung galaxy a10'
+    },
+    {
+      name: 'nothing phone 3'
+    },
+    {
+      name: 'smart tv +'
+    },
+    {
+      name: 'linovo notebook v2176583'
+    },
+    {
+      name: 'nothing pods 2'
+    },
+    {
+      name: 'iPhone 8s'
+    }
+  ];
+  function search(searchString) {
+    let resultedItems = []
+    const searchStr = searchString.toLowerCase().replaceAll(' ', ''); // с деструктуризатором
+    for (const good of items) {
+        for (let letter of searchStr) {
+            if (!good['count']) good['count'] = 0
+            if (good.name.toLowerCase().replaceAll(' ', '').includes(letter)) {
+                good['count']++     
+            }
+        }
+        if (!good['percentage']) good['percentage'] = 0.0;
+        good.percentage = (good.count / searchStr.length) * 100
+        if (good.percentage >= smooth) {
+            resultedItems.push(good)
+        }
+    }
+    resultedItems.sort((good, next) => {
+        if (good.percentage < next.percentage) {
+            return 1;
+        }
+        if (good.percentage > next.percentage) {
+            return -1;
+        }
+        return 0;
+    })
+    
+    return resultedItems.slice(0, limit);
+}
+console.log(search(searchString));
